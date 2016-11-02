@@ -1,0 +1,151 @@
+# Example YAML to get you started quickly.
+# Be aware that YAML has indentation based scoping.
+# Code completion support is available so start typing for available options.
+swagger: '2.0'
+
+# This is your document metadata
+info:
+  version: "0.0.0"
+  title: Badminton API
+
+host: nicaoi.com
+schemes:
+  - https
+basePath: /api
+# Describe your paths here
+paths:
+  /users:
+    get:
+      description: |
+        Gets `User` objects.
+        Optional query param of **size** determines size of returned array
+      parameters:
+        -
+          name: size
+          in: query
+          description: Size of array
+          required: false
+          type: number
+          format: integer
+      responses:
+        200:
+          description: Successful response
+          schema:
+            title: Users
+            type: array
+            items:
+              $ref: "#/definitions/User"
+    post:
+      description: |
+        Creates a `User` object.
+      parameters:
+        -
+          name: User
+          in: body
+          description: User JSON to create
+          required: true
+          schema:
+            $ref: "#/definitions/User"
+      responses:
+        201:
+          description: User created
+  /users/{userId}:
+    get:
+      description: |
+        Gets `User` object.
+      produces: 
+        - application/json
+      parameters:
+        -
+          in: path
+          name: userId
+          description: ID of user to be fetched
+          required: true
+          type: number
+          format: int64
+      responses:
+        404: 
+          description: User not found
+        200:
+          description: Successful response
+          schema:
+            $ref: "#/definitions/User"
+  /clubs/{clubId}:
+    get:
+      description: |
+        Gets `Club` object.
+      produces: 
+        - application/json
+      parameters:
+        -
+          in: path
+          name: clubId
+          description: ID of club to be fetched
+          required: true
+          type: number
+          format: int64
+      responses:
+        404: 
+          description: Club not found
+        200:
+          description: Successful response
+          schema:
+            $ref: "#/definitions/Club"
+  /venues/{venueId}:
+    get:
+      description: |
+        Gets `Venue` object.
+      produces: 
+        - application/json
+      parameters:
+        -
+          in: path
+          name: venueId
+          description: ID of venue to be fetched
+          required: true
+          type: number
+          format: int64
+      responses:
+        404: 
+          description: Venue not found
+        200:
+          description: Successful response
+          schema:
+            $ref: "#/definitions/Venue"
+definitions:
+  User:
+    type: object
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      email:
+        type: string
+  Club:
+    type: object
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+  Venue:
+    type: object
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      location:
+        $ref: "#/definitions/Location"
+  Location:
+    type: object
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      latitude:
+        type: integer
+      longitude:
+        type: integer
